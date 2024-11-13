@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="loginpage.css">
+</head>
+<body>
+    <div class="login-container">
+        <!-- Header with Image and Title -->
+        <div class="login-header">
+            <img class="sti"    src="images.png" alt="Logo">
+            <h2>Login to 
+                <a href="aLibrary.html" target="_blank" style="color: inherit; text-decoration: none;" class="hover-link">
+                    LitArchive
+                </a>
+            </h2>
+        </div>
+        
+        <!-- Form Fields -->
+        <form id="loginForm">
+            <label for="identifier">Email or Username</label>
+            <input type="text" id="identifier" placeholder="Enter your email or username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+        
+        <p id="loginError" style="color: red; display: none;">Invalid email/username or password!</p>
+
+        <!-- Link to Registration Page -->
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>    
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+            const identifier = document.getElementById('identifier').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+
+            // Fetch users from localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if (users[identifier] && users[identifier].password === password) {
+                // Store the role in localStorage for later use
+                localStorage.setItem('userRole', users[identifier].role);
+                window.location.href = users[identifier].role === 'admin' ? 'admin.html' : 'aLibrary.html';
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+    </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="websiteconnect.js"></script>
+</body>
+</html>

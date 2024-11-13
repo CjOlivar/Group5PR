@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Give Feedback</title>
+    <link rel="stylesheet" href="Library.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div id="rizz"><a href="https://www.sti.edu" target="_blank"><img src="images.png" alt="Logo"></a></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Button to open the popup -->
+            <button id="open-feedback-btn" onclick="openFeedbackForm()">Give Feedback</button>
+
+            <!-- Popup Feedback Form -->
+            <div id="feedback-popup" class="modal">
+                <div class="modal-content">
+                    <!-- Close Button -->
+                    <button id="close-feedback-btn" onclick="closeFeedbackForm()">×</button>
+
+                    <h2>Thank you for your Feedback!</h2>
+                    <form id="feedback-form" onsubmit="saveFeedback(event)">
+                        <label for="comment">Your Comment:</label><br>
+                        <textarea id="comment" name="comment" rows="4" required></textarea><br><br>
+                        <label for="rating">Rating:</label><br>
+                        <select id="rating" name="rating" required>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select><br><br>
+                        <button type="submit">Submit Feedback</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="#">Feedback</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="aLibrary.html">LitArchive</a>
+            <a href="reviews.html">asasa</a>
+        </div>
+    </footer>
+
+    <script>
+        // Open the feedback form popup
+        function openFeedbackForm() {
+            document.getElementById('feedback-popup').style.display = 'block';
+        }
+
+        // Close the feedback form popup
+        function closeFeedbackForm() {
+            document.getElementById('feedback-popup').style.display = 'none';
+        }
+
+        // Save feedback to localStorage
+        function saveFeedback(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+
+            const comment = document.getElementById('comment').value;
+            const rating = document.getElementById('rating').value;
+
+            // Create an object to store the feedback
+            const feedback = {
+                comment: comment,
+                rating: rating,
+                timestamp: new Date().toISOString() // Optional: Save the submission time
+            };
+
+            // Get existing feedback from localStorage (if any)
+            let feedbackList = JSON.parse(localStorage.getItem('feedbacks')) || [];
+
+            // Add the new feedback to the list
+            feedbackList.push(feedback);
+
+            // Save the updated list of feedbacks to localStorage
+            localStorage.setItem('feedbacks', JSON.stringify(feedbackList));
+
+            // Close the popup after submission
+            closeFeedbackForm();
+            alert('Thank you for your feedback!');
+        }
+    </script>
+</body>
+</html>

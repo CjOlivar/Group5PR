@@ -1,0 +1,62 @@
+<!-- reviews.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews Feedback</title>
+    <link rel="stylesheet" href="Library.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div id="rizz"><a href="https://www.sti.edu" target="_blank"><img src="images.png" alt="Logo"></a></div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>User Feedbacks</h2>
+            <!-- Section to display feedbacks -->
+            <div id="feedback-list"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <a href="#">Feedback</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </footer>
+
+    <script>
+        // Load and display feedback from localStorage
+        window.onload = function() {
+            const feedbackList = JSON.parse(localStorage.getItem('feedbacks')) || [];
+            const feedbackContainer = document.getElementById('feedback-list');
+            feedbackContainer.innerHTML = '';
+
+            // If no feedback exists, display a message
+            if (feedbackList.length === 0) {
+                feedbackContainer.innerHTML = '<p>No feedback available yet.</p>';
+            } else {
+                // Loop through all feedbacks and display each
+                feedbackList.forEach((feedback, index) => {
+                    const feedbackDiv = document.createElement('div');
+                    feedbackDiv.classList.add('feedback-item');
+                    feedbackDiv.innerHTML = `
+                        <div class="feedback">
+                            <p><strong>Comment:</strong> ${feedback.comment}</p>
+                            <p><strong>Rating:</strong> ${feedback.rating} / 5</p>
+                            <p><small><i>Submitted on: ${new Date(feedback.timestamp).toLocaleString()}</i></small></p>
+                        </div>
+                        <hr>
+                    `;
+                    feedbackContainer.appendChild(feedbackDiv);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

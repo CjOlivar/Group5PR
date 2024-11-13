@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link 
+        rel="icon"
+        href="images.png"
+        type="image/x-icon"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            background-image: url(bg_1.jpg);
+            background-size: cover; 
+            background-position: center;
+        }
+
+        .login-form-container {
+            position: relative;
+            width: 280px;
+            margin-top: -350px;
+            left: 500px;
+        }
+
+        
+
+        .login-form-box {
+            position: relative;
+            border: 2px solid #000;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        .login-form-box img {
+            display: block;
+            margin: 0 auto 15px;
+            width: 100%;
+            max-width: 100px;
+            height: auto;
+        }
+
+        .login-form {
+            display: none;
+            flex-direction: column;
+        }
+
+        .login-form.show {
+            display: flex;
+        }
+
+        .login-form label, .login-form input, .login-form button {
+            margin-bottom: 12px;
+        }
+
+        .login-form input, .login-form button {
+            padding: 8px;
+        }
+
+        .back-button, .login-form button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .back-button {
+            margin-top: 10px;
+        }
+
+        .back-button:hover, .login-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .signup {
+    border: solid;
+    border-color: #007bff;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 14.1px;
+}
+    </style>
+</head>
+<body>
+    
+    <div class="overlay" id="overlay"></div>
+    <div class="login-form-container">
+        <div class="login-form-box">
+            <img src="https://one.sti.edu/images/sti_logo.png" alt="Login Image"> <!-- Replace with your image URL -->
+            <div class="login-form" id="step1">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required><br>
+                <button type="button" onclick="showNextStep('step2')">Next</button>
+            </div>
+            <div class="login-form" id="step2">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <button type="button" onclick="showNextStep('step1')">Back</button>
+                <button type="submit" onclick="login()">Login</button>
+            </div>
+            <a href="signup.html" class="signup">Don't have an account? Sign up now</a>
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Simple user data for validation
+        const users = [
+            { fullName: 'Admin', password: 'admin123', role: 'admin' },
+            { fullName: 'User', password: 'user123', role: 'user' }
+        ];
+
+        let currentUser = {
+            fullName: '',
+            studentId: '',
+            password: ''
+        };
+
+        function showNextStep(stepId) {
+            const steps = document.querySelectorAll('.login-form');
+            steps.forEach(step => {
+                step.classList.remove('show');
+            });
+            document.getElementById(stepId).classList.add('show');
+        }
+
+        window.addEventListener('load', () => {
+            showNextStep('step1'); // Show the first step on load
+        });
+
+        function login() {
+            // Get inputs from the form
+            const fullName = document.getElementById('fullName').value;
+            const password = document.getElementById('password').value;
+
+            // Find the user
+            const user = users.find(u => u.fullName === fullName && u.password === password);
+
+            if (user) {
+                if (user.role === 'admin') {
+                    window.location.href = "admin.html"; // Redirect to admin dashboard
+                } else if (user.role === 'user') {
+                    window.location.href = "aLibrary.html"; // Redirect to user dashboard
+                }
+            } else {
+                alert("Invalid login credentials!");
+            }
+        }
+
+        function toggleDropdown() {
+    const dropdownContent = document.querySelector('.dropdown-content');
+    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+}
+
+    </script>
+
+</body>
+</html>

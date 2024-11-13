@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - STI Calamba Book Portal</title>
+    <link rel="icon" href="images.png" type="image/png">
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black background with transparency */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%; /* Width of the box */
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Borrow Button Style */
+        #confirmBorrow {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        #confirmBorrow:hover {
+            background-color: #218838;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #004d99;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header img {
+            width: 50px;
+            height: auto;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.2em;
+            flex-grow: 1;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .book-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 100px 20px 20px;
+            padding: 20px;
+            width: calc(100% - 40px);
+            max-width: 1200px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-image {
+            width: 200px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 8px;
+        }
+
+        .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .book-title {
+            font-size: 2em;
+            color: #004d99;
+            margin-bottom: 15px;
+        }
+
+        .book-details {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .rating {
+            margin: 20px 0;
+        }
+
+        .rating span {
+            font-size: 1.5em;
+            color: #f5c518; /* Gold color for stars */
+        }
+
+        .book-status {
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .available {
+            background-color: #28a745;
+        }
+
+        .checked-out {
+            background-color: #dc3545;
+        }
+
+        .borrow-button {
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #004d99;
+            color: white;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .borrow-button:hover {
+            background-color: #003366;
+        }
+
+        .related-books {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .related-books h2 {
+            font-size: 1.5em;
+            color: #004d99;
+            margin-bottom: 15px;
+        }
+
+        .related-books .book-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 100px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-books .book-item img {
+            width: 12%;
+            height: auto;
+            margin-right: 10px;
+            border-radius: 5px;
+        }
+
+        .related-books .book-item .book-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .related-books .book-item .book-info .book-title {
+            font-size: 1.2em;
+            color: #004d99;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 1px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            border-top: 1px solid #ddd;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #004d99;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        html{
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="logo">
+            <img src="images.png" alt="Logo">
+        </div>
+        <div style="padding-left: 2%;"></div>
+        <h1>Essetial Calculus</h1>
+        <a href="aLibrary.html">
+            <img src="bahay.png" alt="Home Icon" id="homeicon">
+        </a>
+    </header>
+
+    <main>
+        <div class="book-container">
+            <img class="book-image" src="math2.jpeg" alt="Book Cover">
+            <div class="book-info">
+                <p class="book-title">Essential Calculus</p>
+                <div class="book-details">
+                    <p><strong>Author:</strong> Chris McMullen</p>
+                    <p><strong>Subject:</strong> Mathematics</p>
+                    <p><strong>Publication Year:</strong> 2018</p>
+                    <p><strong>Publisher:</strong> Zishka Publishing</p>
+                    <p><strong>ISBN:</strong> 1941691242, 978-1941691243</p>
+                    <p style="text-align: justify;"><strong>Description:</strong> Includes derivatives, integrals, l'Hopital's rule, and full solutions Develop fluency with calculus. Each chapter begins with a concise review of the pertinent concepts and math with fully solved examples help to serve as a guide that practice exercises help to build fluency.</style></p>
+                </div>
+                <div class="rating">
+                    <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span> <!-- 4 stars out of 5 -->
+                </div>
+                <button class="book-status available">Available</button>
+                <button class="borrow-button" onclick="openModal()">Borrow</button>
+            </div>
+        </div>
+
+        <div class="related-books">
+            <h2>Related Books</h2>
+            <div class="book-item">
+                <img src="math.jpeg" alt="Related Book 1">
+                <div class="book-info">
+                    <p class="book-title">All the mathemartics you missed</p>
+                    <p><strong>Author:</strong> Thomas Garrity</p>
+                </div>
+            </div>
+            <div class="book-item">
+                <img src="math1.jpeg" alt="Related Book 2">
+                <div class="book-info">
+                    <p class="book-title">Basic Mathematics</p>
+                    <p><strong>Author:</strong> Serge Lang</p>
+                </div>
+            </div>
+            <!-- Add more related books as needed -->
+        </div>
+
+        <!-- Modal Popup HTML -->
+        <div id="borrowModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h3>Borrow Confirmation</h3>
+                <p>Do you want to borrow "Essential Calculus"?</p>
+                <button id="confirmBorrow" onclick="borrowBook()">Yes, Borrow</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; STI College Calamba Library</p>
+    </footer>
+
+    <script>
+        function openModal() {
+            document.getElementById("borrowModal").style.display = "block";
+        }
+    
+        function closeModal() {
+            document.getElementById("borrowModal").style.display = "none";
+        }
+    
+        function borrowBook(bookTitle) {
+            alert('The book was borrowed successfully!!' );
+    
+            // Get any existing books from local storage
+            let borrowedBooks = JSON.parse(localStorage.getItem('borrowedBooks')) || [];
+            
+            // Add the new borrowed book
+            borrowedBooks.push(bookTitle);
+    
+            // Save the updated list back to local storage
+            localStorage.setItem('borrowedBooks', JSON.stringify(borrowedBooks));
+            
+            // Save the latest borrowed book separately if needed
+            localStorage.setItem('latestBorrowedBook', bookTitle);
+    
+            closeModal();
+        }
+    
+        // Close the modal if the user clicks outside the modal content
+        window.onclick = function(event) {
+            var modal = document.getElementById("borrowModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="Library.css">
+
+    <style>
+        .pic {
+            height: 300px;
+            width: auto;
+            margin: 10px;
+            border-style: solid;
+            border-radius: 10px;
+        }
+        
+        .inp {
+            border-style: solid;
+            border: #004bff;
+            border-radius: 5px;
+            padding: 7px;
+            background-color: #004bff;
+            color: white;
+            margin: 10px;
+        }
+
+        input {
+            margin-left: 5px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Edit Profile</h1>
+    </header>
+    <main>
+            <form id="editProfileForm">
+                    <img id="profilePic" class="pic" src="kelly.jpg" alt="Profile Picture">
+                    <br>
+                    <input type="file" id="profilePicInput" class="inp" accept="image/*">
+                    <label class="inp" for="name">Name:<input type="text" id="name" value="Jankelly Cantalejo" required></label>
+                    <br>
+                    <button type="submit" class="inp">Save Changes</button>
+                    <button type="button" class="inp" onclick="cancelEdit()">Cancel</button>
+            </form>
+    </main>
+    <script src="edit_profile.js"></script>
+</body>
+</html>

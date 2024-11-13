@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Admin Page</title>
+    <link rel="icon" href="images.png" type="image/png">
+    <link rel="stylesheet" href="Library.css">
+</head>
+<style>
+     table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    button {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    <header>
+        <div class="header-content">
+            <div id="rizz"><a href="https://www.sti.edu" target="_blank"><img src="images.png" alt="Logo"></a></div>
+            <div class="box">
+                <a href="#popup-box"><img src="user.png"></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Manage Books</h1>
+
+        <div id="add-book-form">
+            <h3>Add New Book</h3>
+            <label for="new-title">Book Title:</label>
+            <input type="text" id="new-title" placeholder="Enter book title" required>
+            
+            <label for="new-description">Description:</label>
+            <textarea id="new-description" placeholder="Enter book description" required></textarea>
+            
+            <label for="new-image">Cover Image:</label>
+            <input type="file" id="new-image" accept="image/*" required onchange="previewImage(event)">
+            <img id="image-preview" src="" alt="Image preview" style="width: 100px; height: 150px; display: none;">
+
+
+            
+            <button class="add-button" onclick="addBook()">Add Book</button>
+        </div>
+
+        <h2>Book List</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="book-list">
+                <!-- Book entries will be dynamically populated here -->
+            </tbody>
+        </table>
+
+        <p id="total-stock">Total Books in Stock: <span id="stock-count">0</span></p>
+
+        <div class="admin-nav">
+            <a href="aLibrary.html">Dashboard</a>
+            <a href="manage_books.html">Manage Books</a>
+            <a href="users.html">Users</a>
+            <a href="reports.html">Reports</a>
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </div>
+        <!-- Modal for displaying book details -->
+<div id="book-detail-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modal-title"></h2>
+        <img id="modal-image" src="" alt="Cover" style="width: 120px; height: 180px;">
+        <p id="modal-description"></p>
+        <button id="confirmBorrow">Borrow</button>
+    </div>
+</div>
+
+
+    </main>
+
+    <script>
+            // Sample initial data if localStorage is empty
+            const defaultBooks = [
+            { id: 1, title: "1984", author: "George Orwell", status: "Available" },
+            { id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", status: "Checked Out" },
+            { id: 3, title: "The Great Gatsby", author: "F. Scott Fitzgerald", status: "Available" },
+            { id: 4, title: "Moby Dick", author: "Herman Melville", status: "Available" },
+            { id: 5, title: "Pride and Prejudice", author: "Jane Austen", status: "Checked Out" }
+        ];
+
+    if (!localStorage.getItem('books')) {
+        localStorage.setItem('books', JSON.stringify(defaultBooks));
+    }
+
+    function fetchBooks() {
+        const books = JSON.parse(localStorage.getItem('books'));
+        const bookList = document.getElementById('book-list');
+        bookList.innerHTML = '';
+
+        books.forEach(book => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${book.id}</td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.status}</td>
+                <td>
+                    <button onclick="toggleStatus(${book.id})">
+                        ${book.status === 'Available' ? 'Check Out' : 'Mark Available'}
+                    </button>
+                </td>
+            `;
+            bookList.appendChild(row);
+        });
+    }
+
+    function toggleStatus(bookId) {
+    const books = JSON.parse(localStorage.getItem('books'));
+    const bookIndex = books.findIndex(book => book.id === bookId);
+
+    if (bookIndex !== -1) {
+        // Toggle the status between 'Available' and 'Checked Out'
+        books[bookIndex].status = books[bookIndex].status === 'Available' ? 'Checked Out' : 'Available';
+        // Save the updated list back to localStorage
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+}
+
+    window.onload = fetchBooks;
+    
+
+    // Toggle the book status and update localStorage
+    function toggleStatus(bookId) {
+        const books = JSON.parse(localStorage.getItem('books'));
+        const bookIndex = books.findIndex(book => book.id === bookId);
+
+        if (bookIndex !== -1) {
+            // Toggle the status
+            books[bookIndex].status = books[bookIndex].status === 'Available' ? 'Checked Out' : 'Available';
+            // Update localStorage
+            localStorage.setItem('books', JSON.stringify(books));
+            // Refresh the book list display
+            fetchBooks();
+        }
+    }
+
+    // Load the books when the page loads
+    window.onload = fetchBooks;
+
+        // Load books from local storage
+        function loadBooks() {
+            const storedBooks = localStorage.getItem('books');
+            return storedBooks ? JSON.parse(storedBooks) : [];
+        }
+
+        // Save books to local storage
+        function saveBooks(books) {
+            localStorage.setItem('books', JSON.stringify(books));
+        }
+
+        // Load book data from local storage
+        let books = loadBooks();
+
+        // Function to render the book list and stock count
+        function renderBookList() {
+            const bookList = document.getElementById('book-list');
+            bookList.innerHTML = ''; // Clear existing content
+
+            books.forEach(book => {
+               const row = document.createElement('tr');
+               row.innerHTML = `
+                   <td><img src="${book.image}" alt="Cover" style="width: 50px; height: 75px;"></td>
+                   <td><input type="text" value="${book.title}" id="title-${book.id}"></td>
+                    <td><textarea id="description-${book.id}">${book.description}</textarea></td>
+                    <td><input type="number" value="${book.stock}" id="stock-${book.id}" min="0"></td>
+                    <td>
+                        <button class="update-button" onclick="updateBook(${book.id})">Update</button>
+                        <button class="delete-button" onclick="deleteBook(${book.id})">Delete</button>
+                    </td>
+             `;
+                bookList.appendChild(row);
+             });
+
+            updateTotalStock();
+        }
+
+// Function to update total stock count
+function updateTotalStock() {
+    const totalStock = books.reduce((total, book) => total + book.stock, 0);
+    document.getElementById('stock-count').textContent = totalStock;
+}
+
+        // Function to update an existing book
+        function updateBook(bookId) {
+            const updatedTitle = document.getElementById(title-$bookId).value;
+            const updatedDescription = document.getElementById(description-$bookId).value;
+            const updatedStock = parseInt(document.getElementById(stock-$bookId).value, 10);
+            const book = books.find(b => b.id === bookId);
+
+            if (book) {
+                book.title = updatedTitle;
+                book.description = updatedDescription;
+                book.stock = updatedStock;
+                saveBooks(books); // Save changes to local storage
+                updateTotalStock(); // Update total stock after change
+            }
+        }
+
+        function previewImage(event) {
+    const file = event.target.files[0]; // Get the selected file
+    const imagePreview = document.getElementById('image-preview');
+    
+    if (file) {
+        const reader = new FileReader(); // Create a new FileReader instance
+        
+        reader.onload = function(e) {
+            imagePreview.style.display = 'block'; // Show the preview image
+            imagePreview.src = e.target.result; // Set the preview source to the file data URL
+        };
+        
+        reader.readAsDataURL(file); // Read the file as a data URL
+    } else {
+        imagePreview.style.display = 'none'; // Hide the preview if no file is selected
+    }
+}
+
+// Function to add a new book
+function addBook() {
+    const newTitle = document.getElementById('new-title').value;
+    const newDescription = document.getElementById('new-description').value;
+    const newImage = document.getElementById('new-image').files[0]; // Get the selected file
+    const newStock = parseInt(document.getElementById('new-stock').value, 10);
+
+    if (!newTitle || !newDescription || !newImage || isNaN(newStock) || newStock < 0) {
+        alert("Please fill all the fields correctly.");
+        return;
+    }
+
+    // Create a new FileReader to convert the image to a data URL
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const newBook = { 
+            id: Date.now(), 
+            title: newTitle, 
+            description: newDescription, 
+            image: e.target.result, // Store the image data URL
+            stock: newStock 
+        };
+
+        books.push(newBook);
+        saveBooks(books); // Save to local storage
+        renderBookList(); // Re-render the list to include the new book
+
+        // Clear input fields
+        document.getElementById('new-title').value = '';
+        document.getElementById('new-description').value = '';
+        document.getElementById('new-image').value = '';
+        document.getElementById('new-stock').value = '';
+        document.getElementById('image-preview').style.display = 'none'; // Hide the preview image
+    };
+
+    reader.readAsDataURL(newImage); // Read the image as a data URL
+}
+
+        // Function to delete a book
+        function deleteBook(bookId) {
+            books = books.filter(book => book.id !== bookId);
+            saveBooks(books); // Save changes to local storage
+            renderBookList(); // Re-render the list after deletion
+        }
+
+        // Function to update total stock count
+        function updateTotalStock() {
+            const totalStock = books.reduce((total, book) => total + book.stock, 0);
+            document.getElementById('stock-count').textContent = totalStock;
+        }
+
+        function logout() {
+            alert('Logging out...');
+            window.location.href = 'loginpage.html';
+            // Redirect to login page or perform any other logout action
+        }
+
+        // Render the initial book list when the page loads
+        renderBookList();
+    </script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LitArchive</title>
+        <link rel="icon" href="images.png" type="image/png">
+        <link rel="stylesheet" href="Library.css">
+    </head>
+    <body>
+        <header>
+            <div class="header-content">
+                <div id="rizz"><a href="https://www.sti.edu" target="_blank"><img src="images.png" alt="Logo"></a></div>
+                <div class="profile-dropdown">
+                    <img id="mainProfilePic" src="kelly.jpg" alt="Profile Icon" class="profile-icon" onclick="toggleDropdown()">
+                    <div class="dropdown-content">
+                        <div class="dropdown-info">
+                            <img id="dropdownProfilePic" src="kelly.jpg" alt="Profile" class="dropdown-profile-image">
+                            <span id="dropdownName" class="dropdown-name">Jankelly Cantalejo</span>
+                        </div>
+                        <a href="edit_profile.html">Edit Profile</a>
+                        <a href="loginpage.html" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container">
+                <div class="search-wrapper">
+                    <input id="searchbar" type="text" name="search" placeholder="Search for books..." autocomplete="off" onkeyup="search_books()">
+                    <div class="box">
+                        <a href="#popup-boxe"><button class="genre-button">Advance search</button></a>
+                </div>
+                <div id="popup-boxe" class="modal">
+                    <div class="contente">
+                            <div class="profe">
+                                <div class="genre-wrappere"> 
+                                    <a href="#"><button class="genre-buttone" onclick="filterBooks('it')">Informational Technology</button></a>
+                                    <a href="#"><button class="genre-buttone" onclick="filterBooks('math')">Mathematics</button></a>
+                                    <a href="#"><button class="genre-buttone" onclick="filterBooks('sci')">Science</button></a>
+                                    <a href="#"><button class="genre-buttone" onclick="filterBooks('poli')">Politics</button></a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="exit">&times;</a>
+                    </div>
+                </div>
+
+            
+    
+                <div class="genre-wrapper">
+                    <button class="genre-button" onclick="filterBooks('all')">All Books</button>
+                    <button class="genre-button" onclick="filterBooks('trending')">
+                        Trending <span id="trending-count"></span>
+                    </button>
+                    <button class="genre-button" onclick="filterBooks('most')">
+                        Most Borrowed <span id="most-count"></span>
+                    </button>
+                </div>
+                
+                <!-- Available count display (for "All Books") -->
+                <div id="available-count" class="available-count-display">Available Books: 0</div>
+
+                <div class="books-wrapper">
+                    <button class="nav-arrow prev" onclick="scrollBooks(-1)">&#10094;</button>
+                    <div class="book-container">
+                        <ul id='list' class="book-list">
+
+                            <li class="book-item trending book-item all book-item it">
+                                <a href="ghost.html">
+                                    <img class="book-image" src="it.jpeg" alt="Book">
+                                    <p class="book-title">Fundamentals of<br> Information Technology</p>
+                                    <button class="book-status available">Available</button>
+                                </a>
+                            </li>
+                            <li class="book-item trending book-item most book-item all book-item math">
+                                <a href="calc.html">
+                                    <img class="book-image" src="math2.jpeg" alt="Calculus">
+                                    <p class="book-title">Essential Calculus</p>
+                                    <button class="book-status available">Available</button>
+                                </a>
+                            </li>
+                            <li class="book-item all book-item trending book-item most book-item it ">
+                                <a href="itil.html">
+                                    <img class="book-image" src="itil.jpeg" alt="Book">
+                                    <p class="book-title">ITIL For Beginners</p>
+                                    <button class="book-status checked-out">Checked Out</button>
+                                </a>
+                            </li>
+                            <li class="book-item trending book-item all book-item sci">
+                                <img class="book-image" src="bio.png" alt="bio">
+                                <p class="book-title">Biology</p>
+                                <button class="book-status available">Available</button>
+                            </li>
+                            <li class="book-item trending book-item all  book-item it">
+                                <img class="book-image" src="itsm.jpg" alt="Book">
+                                <p class="book-title">ITSM</p>
+                                <button class="book-status available">Available</button>
+                            </li>
+                            <li class="book-item all book-item poli">
+                                <img class="book-image" src="pog.jpg" alt="pog">
+                                <p class="book-title">Politics and <br>Governance</p>
+                                <button class="book-status available">Available</button>
+                            </li>
+                            <li class="book-item trending book-item all book-item most book-item math">
+                                <img class="book-image" src="math1.jpeg" alt="om">
+                                <p class="book-title">Basic Mathematics</p>
+                                <button class="book-status checked-out">Checked Out</button>
+                            </li>
+                            <li class="book-item all book-item it">
+                                <img class="book-image" src="javads.jpg" alt="javaprog">
+                                <p class="book-title">Java Programming</p>
+                                <button class="book-status available">Available</button>
+                            </li>
+                            <li class="book-item all book-item math">
+                                <img class="book-image" src="math.jpeg" alt="Book">
+                                <p class="book-title">All The Mathematics <br> You Missed</p>
+                                <button class="book-status available">Available</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="nav-arrow next" onclick="scrollBooks(1)">&#10095;</button>
+                </div>
+            </div>
+        </main>
+    
+        <div id="feedback-form" class="modal">
+            <div class="feedback-container">
+                <h2>Provide Feedback</h2>
+                <label for="comment">Your Comment:</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Write your comment here..." required></textarea>
+                
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+                
+                <button type="submit" id="submit-feedback" onclick="submitFeedback()">Submit Feedback</button>
+            </div>
+            <a href="#" class="exit" onclick="closeFeedbackForm()">&times;</a>
+        </div>
+        <footer>
+            <div class="footer-content">
+                <a href="feedback.html">Feedback</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+        </footer>
+
+        <script src="script.js"></script>
+        <script>
+            function scrollBooks(direction) {
+                const container = document.querySelector('.book-container');
+                const scrollAmount = 300; // Adjust as needed
+                container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+            }
+
+            function filterBooks(genre) {
+                const allBooks = document.querySelectorAll('.book-item');
+                allBooks.forEach(book => {
+                    if (book.classList.contains(genre)) {
+                        book.style.display = 'flex';
+                    } else {
+                        book.style.display = 'none';
+                    } 
+                });
+            }
+
+            function search_books() {
+                let input = document.getElementById('searchbar').value.toLowerCase();
+                let items = document.getElementsByClassName('book-item');
+
+                for (let i = 0; i < items.length; i++) {
+                    let title = items[i].getElementsByClassName('book-title')[0].textContent.toLowerCase();
+                    
+                    if (!title.includes(input)) {
+                        items[i].style.display = "none";
+                    } else {
+                        items[i].style.display = "flex";
+                    }
+                }
+            }
+
+            function filterBooks(genre) {
+    const allBooks = document.querySelectorAll('.book-item');
+    let availableCount = 0;
+    let trendingCount = 0;
+    let mostCount = 0;
+
+    // Iterate over all the books to filter based on genre and availability
+    allBooks.forEach(book => {
+        const isInGenre = book.classList.contains(genre) || genre === 'all';
+        const isAvailable = book.querySelector('.book-status').textContent === 'Available';
+        const isTrending = book.classList.contains('trending');
+        const isMost = book.classList.contains('most');
+
+        // Show all books that match the genre filter, including checked-out books
+        if (genre === 'all') {
+            book.style.display = 'flex';
+        } else {
+            // Show books only matching the selected genre, regardless of availability
+            if (isInGenre) {
+                book.style.display = 'flex';
+            } else {
+                book.style.display = 'none';
+            }
+        }
+
+        // Count available books for the selected genre (but show all books, including checked-out ones)
+        if (isInGenre && isAvailable) {
+            availableCount++;
+        }
+
+        // Count available books for trending and most borrowed categories
+        if (isTrending && isAvailable) {
+            trendingCount++;
+        }
+        if (isMost && isAvailable) {
+            mostCount++;
+        }
+    });
+
+    // Update the available books count for the 'Trending' and 'Most Borrowed' categories
+    if (genre === 'trending') {
+        document.getElementById('trending-count')
+    } else if (genre === 'most') {
+        document.getElementById('most-count')
+    }
+
+    // Update the available books count display for the specific genre (excluding 'all')
+    const countDisplay = document.getElementById('available-count');
+    if (genre === 'all') {
+        countDisplay.style.display = 'none'; // Hide the available count for 'all'
+    } else {
+        countDisplay.style.display = 'block';
+        countDisplay.textContent = `Available Books: ${availableCount}`;
+    }
+}
+
+            function logout() {
+                alert('Logging out...');
+                window.location.href = 'loginpage.html'; // Redirect to login page
+            }
+
+            function openFeedbackForm() {
+    document.getElementById('feedback-form').style.display = 'block';
+}
+
+// Close the feedback form modal
+function closeFeedbackForm() {
+    document.getElementById('feedback-form').style.display = 'none';
+}
+
+// Handle feedback submission
+function submitFeedback() {
+    const comment = document.getElementById('comment').value;
+    const rating = document.getElementById('rating').value;
+
+    if (comment && rating) {
+        // Store feedback in localStorage or sessionStorage
+        const feedback = {
+            comment: comment,
+            rating: rating
+        };
+
+        localStorage.setItem('userFeedback', JSON.stringify(feedback));  // Store feedback
+
+        // Redirect to feedback confirmation page (for example, feedback.html)
+        window.location.href = 'feedback.html';
+    } else {
+        alert('Please provide a comment and a rating.');
+    }
+}
+        </script>
+    </body>
+</html>
